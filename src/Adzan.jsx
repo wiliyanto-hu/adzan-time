@@ -47,6 +47,16 @@ const getTodayPrayerTime = async (cityId = batamID) => {
   return await fetchData(requestUrl);
 };
 
+const containerStyle = {
+  display: "flex",
+  borderRadius: "20px",
+  background: "linear-gradient(to bottom right, #60b7d4ff, #abc9dcff)",
+  height: "25rem",
+  flexDirection: "column",
+  justifyContent: "space-evenly",
+  padding: "0 7px",
+};
+
 export default function Adzan() {
   const prayerNames = new Set([
     "imsak",
@@ -90,13 +100,15 @@ export default function Adzan() {
   return (
     <>
       <h1>{prayerData.dayAndDate}</h1>
-      {prayerData.schedule.map((prayer, idx) => (
-        <AdzanTime
-          key={idx}
-          prayerName={prayer.prayerName}
-          time={prayer.prayerTime}
-        />
-      ))}
+      <div className="prayerTimeContainer" style={containerStyle}>
+        {prayerData.schedule.map((prayer, idx) => (
+          <AdzanTime
+            key={idx}
+            prayerName={prayer.prayerName}
+            time={prayer.prayerTime}
+          />
+        ))}
+      </div>
     </>
   );
 }
