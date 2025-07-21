@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import fetchData from "../utils/fetch";
+import AdzanTime from "./AdzanTime";
 
 const baseAPI = "https://api.myquran.com/v2";
 const batamID = "0506";
@@ -47,11 +48,48 @@ const getTodayPrayerTime = async (cityId = batamID) => {
 };
 
 export default function Adzan() {
-  const [prayerData, setPrayerData] = useState({});
+  const prayerNames = new Set([
+    "imsak",
+    "subuh",
+    "terbit",
+    "dhuha",
+    "dzuhur",
+    "ashar",
+    "maghrib",
+    "isya",
+  ]);
+  const [prayerData, setPrayerData] = useState([]);
+  const fetchPrayerData = async () => {
+    const response = await getTodayPrayerTime();
+    // setPrayerData(response.data);
+    const result = response.data;
+    const filteredData = [];
+
+    Object.keys(result.jadwal).forEach((prayerName) => {
+      if (prayerNames.has(prayerName)) {
+        filteredData.push({
+          prayerName,
+          prayerTime: result.jadwal[prayerName],
+        });
+      }
+    });
+
+    setPrayerData(filteredData);
+  };
+
   useEffect(() => {
-    async () => {
-      const data = await getTodayPrayerTime();
-      setPrayerData(data);
-    };
+    fetchPrayerData();
   }, []);
+
+  return (
+    <>
+      {prayerData.map((prayer, idx) => (
+        <AdzanTime
+          key={idx}
+          prayerName={prayer.prayerName}
+          time={prayer.prayerTime}
+        />
+      ))}
+    </>
+  );
 }

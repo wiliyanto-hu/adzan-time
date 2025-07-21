@@ -1,4 +1,4 @@
-export default function Adzan({ time, prayerName }) {
+export default function AdzanTime({ time, prayerName }) {
   return (
     <li>
       {prayerName} - {time}
