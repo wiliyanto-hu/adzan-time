@@ -58,13 +58,16 @@ export default function Adzan() {
     "maghrib",
     "isya",
   ]);
-  const [prayerData, setPrayerData] = useState([]);
+  const [prayerData, setPrayerData] = useState({
+    dayAndDate: "",
+    schedule: [],
+  });
+
   const fetchPrayerData = async () => {
     const response = await getTodayPrayerTime();
-    // setPrayerData(response.data);
     const result = response.data;
     const filteredData = [];
-
+    console.log(result);
     Object.keys(result.jadwal).forEach((prayerName) => {
       if (prayerNames.has(prayerName)) {
         filteredData.push({
@@ -74,7 +77,10 @@ export default function Adzan() {
       }
     });
 
-    setPrayerData(filteredData);
+    setPrayerData({
+      schedule: filteredData,
+      dayAndDate: result.jadwal.tanggal,
+    });
   };
 
   useEffect(() => {
@@ -83,7 +89,8 @@ export default function Adzan() {
 
   return (
     <>
-      {prayerData.map((prayer, idx) => (
+      <h1>{prayerData.dayAndDate}</h1>
+      {prayerData.schedule.map((prayer, idx) => (
         <AdzanTime
           key={idx}
           prayerName={prayer.prayerName}
