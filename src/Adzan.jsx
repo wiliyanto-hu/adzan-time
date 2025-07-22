@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import fetchData from "../utils/fetch";
 import AdzanTime from "./AdzanTime";
+import "./Adzan.css";
 
 const baseAPI = "https://api.myquran.com/v2";
 const batamID = "0506";
@@ -47,16 +48,6 @@ const getTodayPrayerTime = async (cityId = batamID) => {
   return await fetchData(requestUrl);
 };
 
-const containerStyle = {
-  display: "flex",
-  borderRadius: "20px",
-  background: "linear-gradient(to bottom right, #60b7d4ff, #abc9dcff)",
-  height: "25rem",
-  flexDirection: "column",
-  justifyContent: "space-evenly",
-  padding: "1rem",
-};
-
 export default function Adzan() {
   const prayerNames = new Set([
     "imsak",
@@ -71,13 +62,13 @@ export default function Adzan() {
   const [prayerData, setPrayerData] = useState({
     dayAndDate: "",
     schedule: [],
+    city: "",
   });
 
   const fetchPrayerData = async () => {
     const response = await getTodayPrayerTime();
     const result = response.data;
     const filteredData = [];
-    console.log(result);
     Object.keys(result.jadwal).forEach((prayerName) => {
       if (prayerNames.has(prayerName)) {
         filteredData.push({
@@ -88,6 +79,7 @@ export default function Adzan() {
     });
 
     setPrayerData({
+      city: result.lokasi,
       schedule: filteredData,
       dayAndDate: result.jadwal.tanggal,
     });
@@ -99,8 +91,11 @@ export default function Adzan() {
 
   return (
     <>
-      <h1>{prayerData.dayAndDate}</h1>
-      <div className="prayerTimeContainer" style={containerStyle}>
+      <div className="AdzanHeader">
+        <h2>{prayerData.city}</h2>
+        <h2>{prayerData.dayAndDate}</h2>
+      </div>
+      <div className="PrayerTimeContainer">
         {prayerData.schedule.map((prayer, idx) => (
           <AdzanTime
             key={idx}

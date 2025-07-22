@@ -1,0 +1,12 @@
+.timeText {
+  color: white;
+  font-size: 1.1rem;
+}
+
+.Time {
+  display: flex;
+  justify-content: space-around;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 0.3rem;
+}
