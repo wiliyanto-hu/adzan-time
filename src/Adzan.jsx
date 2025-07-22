@@ -54,7 +54,7 @@ const containerStyle = {
   height: "25rem",
   flexDirection: "column",
   justifyContent: "space-evenly",
-  padding: "0 7px",
+  padding: "1rem",
 };
 
 export default function Adzan() {

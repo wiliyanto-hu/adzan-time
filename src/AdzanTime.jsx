@@ -9,7 +9,8 @@ const timeStyle = {
 };
 
 const timeText = {
-  fontFamily: "Nunito Sans, sans-serif",
+  color: "white",
+  fontSize: "1.1rem",
 };
 
 export default function AdzanTime({ time, prayerName }) {
