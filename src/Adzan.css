@@ -1,16 +1,24 @@
 .AdzanHeader {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  background: linear-gradient(to bottom right, #60b7d4ff, #abc9dcff);
+  background: linear-gradient(
+    to bottom right,
+    rgb(236, 164, 88),
+    rgb(233, 202, 169)
+  );
   margin-top: 0;
-  height: 50%;
+  height: 12%;
   padding: 10px;
 }
 
 .PrayerTimeContainer {
   display: flex;
   border-radius: 20px;
-  background: linear-gradient(to bottom right, #60b7d4ff, #abc9dcff);
+  background: linear-gradient(
+    to bottom right,
+    rgb(234, 189, 141),
+    rgb(233, 202, 169)
+  );
   height: 25rem;
   flex-direction: column;
   justify-content: space-evenly;

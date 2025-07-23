@@ -1,14 +1,23 @@
-:root {
-  font-family: Nunito Sans, sans-serif;
-}
 * {
   margin: 0;
   padding: 0;
 }
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  height: 100%;
+}
 
 body {
   width: 50%;
-  height: 100%;
   margin: 0 25%;
-  color: rgb(248, 240, 240);
+  color: rgb(254, 248, 248);
+  font-family: Nunito Sans, sans-serif;
+  background-image: url("../bg1.avif");
+  background-size: cover;
+  background-position: center;
 }
