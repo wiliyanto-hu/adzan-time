@@ -3,6 +3,7 @@ import fetchData from "../utils/fetch";
 import AdzanTime from "./AdzanTime";
 import "./Adzan.css";
 import Clock from "./Clock";
+import { addLeadingZero } from "../utils/string";
 
 const baseAPI = "https://api.myquran.com/v2";
 const batamID = "0506";
@@ -11,6 +12,16 @@ const time = new Date();
 const currentDate = time.getDate();
 const currentMonth = time.getMonth() + 1;
 const currentYear = time.getFullYear();
+const currentDay = time.getDay();
+const weekdays = [
+  "Minggu",
+  "Senin",
+  "Selasa",
+  "Rabu",
+  "Kamis",
+  "Jumat",
+  "Sabtu",
+];
 
 const getCityId = async (cityName) => {
   if (!cityName) return null;
@@ -61,13 +72,20 @@ export default function Adzan() {
     "isya",
   ]);
   const [prayerData, setPrayerData] = useState({
-    dayAndDate: "",
+    dayAndDate: `${weekdays[currentDay]}, ${currentDate}/${addLeadingZero(
+      currentMonth
+    )}/${currentYear}`,
     schedule: [],
-    city: "",
+    city: "KOTA JAKARTA",
   });
+  const [error, setError] = useState(false);
 
   const fetchPrayerData = async () => {
     const response = await getTodayPrayerTime();
+    if (!response.status) {
+      setError(true);
+      return;
+    }
     const result = response.data;
     const filteredData = [];
     Object.keys(result.jadwal).forEach((prayerName) => {
@@ -78,12 +96,12 @@ export default function Adzan() {
         });
       }
     });
-
     setPrayerData({
       city: result.lokasi,
       schedule: filteredData,
       dayAndDate: result.jadwal.tanggal,
     });
+    setError(false);
   };
 
   useEffect(() => {
@@ -98,13 +116,17 @@ export default function Adzan() {
         <Clock />
       </div>
       <div className="PrayerTimeContainer">
-        {prayerData.schedule.map((prayer, idx) => (
-          <AdzanTime
-            key={idx}
-            prayerName={prayer.prayerName}
-            time={prayer.prayerTime}
-          />
-        ))}
+        {error ? (
+          <h2>Gagal mengambil data </h2>
+        ) : (
+          prayerData.schedule.map((prayer, idx) => (
+            <AdzanTime
+              key={idx}
+              prayerName={prayer.prayerName}
+              time={prayer.prayerTime}
+            />
+          ))
+        )}
       </div>
     </>
   );

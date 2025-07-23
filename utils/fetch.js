@@ -9,6 +9,6 @@ export default async function fetchData(requestUrl) {
     return result; //
   } catch (error) {
     console.error("Fetch error: ", error);
-    return { error: true, message: error.message };
+    return { status: false, message: error.message };
   }
 }
