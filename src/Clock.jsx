@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { addLeadingZero } from "../utils/string";
 
 export default function Clock() {
   const setCurrentTime = () => {
@@ -7,7 +8,7 @@ export default function Clock() {
     return {
       hour: time.getHours(),
       minute: time.getMinutes(),
-      second: time.getSeconds(),
+      second: addLeadingZero(time.getSeconds()),
     };
   };
 
