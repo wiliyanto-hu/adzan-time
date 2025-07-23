@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import fetchData from "../utils/fetch";
 import AdzanTime from "./AdzanTime";
 import "./Adzan.css";
+import Clock from "./Clock";
 
 const baseAPI = "https://api.myquran.com/v2";
 const batamID = "0506";
@@ -94,6 +95,7 @@ export default function Adzan() {
       <div className="AdzanHeader">
         <h2>{prayerData.city}</h2>
         <h2>{prayerData.dayAndDate}</h2>
+        <Clock />
       </div>
       <div className="PrayerTimeContainer">
         {prayerData.schedule.map((prayer, idx) => (
