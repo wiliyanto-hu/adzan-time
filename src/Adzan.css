@@ -7,8 +7,7 @@
     rgb(233, 202, 169)
   );
   margin-top: 0;
-  height: 12%;
-  padding: 10px;
+  padding: 1.2rem;
 }
 
 .PrayerTimeContainer {
@@ -19,9 +18,10 @@
     rgb(234, 189, 141),
     rgb(233, 202, 169)
   );
-  height: 25rem;
   flex-direction: column;
   justify-content: space-evenly;
   padding: 1rem;
+  margin: 0 auto;
   margin-top: 10%;
+  width: 70%;
 }
