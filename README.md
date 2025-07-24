@@ -14,3 +14,15 @@ A simple web app built with **React** and **Vite** that allows users to fetch an
    git clone https://github.com/wiliyanto-hu/adzan-time.git
    cd adzan-time-app
 ```
+
+2. Install dependencies:
+
+```
+npm install
+```
+
+3. Run
+
+```
+npm run dev
+```
