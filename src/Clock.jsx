@@ -6,8 +6,8 @@ export default function Clock() {
     const time = new Date();
 
     return {
-      hour: time.getHours(),
-      minute: time.getMinutes(),
+      hour: addLeadingZero(time.getHours()),
+      minute: addLeadingZero(time.getMinutes()),
       second: addLeadingZero(time.getSeconds()),
     };
   };
