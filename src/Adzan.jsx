@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import Select from "react-select";
+
 import fetchData from "../utils/fetch";
 import AdzanTime from "./AdzanTime";
 import "./Adzan.css";
@@ -52,10 +54,17 @@ const getCityId = async (cityName) => {
  */
 };
 
-const getTodayPrayerTime = async (cityId = batamID) => {
+const getTodayPrayerTime = async (cityId) => {
   const sholatAPI = `/sholat/jadwal/${cityId}/${currentYear}-${currentMonth}-${currentDate}`;
 
   const requestUrl = `${baseAPI}/${sholatAPI}`;
+
+  return await fetchData(requestUrl);
+};
+
+const getCities = async () => {
+  const cityAPI = "/sholat/kota/semua";
+  const requestUrl = `${baseAPI}/${cityAPI}`;
 
   return await fetchData(requestUrl);
 };
@@ -78,10 +87,12 @@ export default function Adzan() {
     schedule: [],
     city: "KOTA JAKARTA",
   });
+  const [cities, setCities] = useState([{}]);
   const [error, setError] = useState(false);
+  const [cityId, setCityId] = useState(batamID);
 
   const fetchPrayerData = async () => {
-    const response = await getTodayPrayerTime();
+    const response = await getTodayPrayerTime(cityId);
     if (!response.status) {
       setError(true);
       return;
@@ -104,8 +115,31 @@ export default function Adzan() {
     setError(false);
   };
 
+  const fetchCitiesData = async () => {
+    const response = await getCities();
+    if (!response.status) {
+      setError(true);
+      return;
+    }
+    const result = response.data;
+    const cities = result.map((resData) => ({
+      value: resData.id,
+      label: resData.lokasi,
+    }));
+    setCities(cities);
+  };
+
+  const handleCityChange = (city) => {
+    setCityId(city.value);
+  };
+  const handleClick = async (e) => {
+    e.preventDefault();
+    await fetchPrayerData();
+  };
+
   useEffect(() => {
     fetchPrayerData();
+    fetchCitiesData();
   }, []);
 
   return (
@@ -115,6 +149,23 @@ export default function Adzan() {
         <h2>{prayerData.dayAndDate}</h2>
         <Clock />
       </div>
+      <Select
+        options={cities}
+        styles={{
+          option: (baseStyles) => ({
+            ...baseStyles,
+            color: "black",
+          }),
+        }}
+        onChange={handleCityChange}
+      />
+      <button
+        onClick={(e) => {
+          handleClick(e);
+        }}
+      >
+        Change City
+      </button>
       <div className="PrayerTimeContainer">
         {error ? (
           <h2>Gagal mengambil data </h2>
