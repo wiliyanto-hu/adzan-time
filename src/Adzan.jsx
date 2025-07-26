@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
-import Select from "react-select";
 
 import fetchData from "../utils/fetch";
 import AdzanTime from "./AdzanTime";
 import "./Adzan.css";
 import Clock from "./Clock";
 import { addLeadingZero } from "../utils/string";
+import CityChanger from "./CityChanger";
 
 const baseAPI = "https://api.myquran.com/v2";
 const batamID = "0506";
-const cityAPI = "/sholat/kota/cari/:keyword";
 const time = new Date();
 const currentDate = time.getDate();
 const currentMonth = time.getMonth() + 1;
@@ -24,35 +23,6 @@ const weekdays = [
   "Jumat",
   "Sabtu",
 ];
-
-const getCityId = async (cityName) => {
-  if (!cityName) return null;
-
-  const requestUrl = `${baseAPI}/${cityAPI}/${cityName}`;
-
-  const response = await fetch(requestUrl);
-  const result = response.json();
-  if (!result.status) return null;
-  return result.data[0].id;
-
-  /** EXAMPLE
- * 
- * 
- * {
-  "status": true,
-  "request": {
-    "path": "/sholat/kota/cari/batam",
-    "keyword": "batam"
-  },
-  "data": [
-    {
-      "id": "0506",
-      "lokasi": "KOTA BATAM"
-    }
-  ]
-}
- */
-};
 
 const getTodayPrayerTime = async (cityId) => {
   const sholatAPI = `/sholat/jadwal/${cityId}/${currentYear}-${currentMonth}-${currentDate}`;
@@ -129,10 +99,10 @@ export default function Adzan() {
     setCities(cities);
   };
 
-  const handleCityChange = (city) => {
+  const handleSelectCity = (city) => {
     setCityId(city.value);
   };
-  const handleClick = async (e) => {
+  const handleCityChange = async (e) => {
     e.preventDefault();
     await fetchPrayerData();
   };
@@ -149,23 +119,11 @@ export default function Adzan() {
         <h2>{prayerData.dayAndDate}</h2>
         <Clock />
       </div>
-      <Select
-        options={cities}
-        styles={{
-          option: (baseStyles) => ({
-            ...baseStyles,
-            color: "black",
-          }),
-        }}
-        onChange={handleCityChange}
+      <CityChanger
+        cities={cities}
+        handleCityChange={handleCityChange}
+        handleSelectCity={handleSelectCity}
       />
-      <button
-        onClick={(e) => {
-          handleClick(e);
-        }}
-      >
-        Change City
-      </button>
       <div className="PrayerTimeContainer">
         {error ? (
           <h2>Gagal mengambil data </h2>
