@@ -19,7 +19,7 @@ export default function Clock() {
   }, [time]);
 
   return (
-    <h2>
+    <h2 className="clock">
       {time.hour}:{time.minute}:{time.second}
     </h2>
   );
