@@ -4,7 +4,9 @@
 }
 
 .CityChanger button {
-  background-color: rgb(233, 170, 102);
+  /* background-color: rgb(233, 170, 102);
+   */
+  background: rgb(4, 50, 65);
   color: white;
   padding: 12px 24px;
   border: none;
@@ -17,9 +19,10 @@
 }
 
 .CityChanger button:hover {
-  background-color: rgb(208, 122, 31);
+  /* background-color: rgb(208, 122, 31); */
+  background-color: black;
 }
 
 .CityChanger button:active {
-  background-color: rgb(139, 81, 20);
+  background-color: rgb(78, 72, 65);
 }

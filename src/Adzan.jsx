@@ -122,7 +122,7 @@ export default function Adzan() {
     <>
       <div className="AdzanHeader">
         <h2>{prayerData.city}</h2>
-        <h2>{prayerData.dayAndDate}</h2>
+        <h3>{prayerData.dayAndDate}</h3>
         <Clock />
       </div>
       <CityChanger cities={cities} handleCityChange={handleCityChange} />
