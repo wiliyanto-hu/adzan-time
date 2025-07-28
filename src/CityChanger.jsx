@@ -1,10 +1,12 @@
 import Select from "react-select";
 import "./CityChanger.css";
-export default function CityChanger({
-  cities,
-  handleCityChange,
-  handleSelectCity,
-}) {
+import { useState } from "react";
+export default function CityChanger({ cities, handleCityChange }) {
+  const [formCityId, setFormCityId] = useState("");
+
+  const handleSelectCity = (city) => {
+    setFormCityId(city.value);
+  };
   return (
     <div className="CityChanger">
       <Select
@@ -18,8 +20,8 @@ export default function CityChanger({
         onChange={handleSelectCity}
       />
       <button
-        onClick={(e) => {
-          handleCityChange(e);
+        onClick={() => {
+          handleCityChange(formCityId);
         }}
       >
         Change City

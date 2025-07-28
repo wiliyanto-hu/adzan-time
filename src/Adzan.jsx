@@ -51,7 +51,23 @@ export default function Adzan() {
     "isya",
   ]);
 
-  const fetchPrayerData = async () => {
+  const getInitialCityId = () => {
+    const savedCityId = localStorage.getItem("cityId");
+    return savedCityId ? savedCityId : jakartaID;
+  };
+
+  const [prayerData, setPrayerData] = useState({
+    dayAndDate: `${weekdays[currentDay]}, ${currentDate}/${addLeadingZero(
+      currentMonth
+    )}/${currentYear}`,
+    schedule: [],
+    city: "KOTA JAKARTA",
+  });
+  const [cities, setCities] = useState([{}]);
+  const [error, setError] = useState(false);
+  const [cityId, setCityId] = useState(getInitialCityId);
+
+  const fetchPrayerData = async (cityId) => {
     const response = await getTodayPrayerTime(cityId);
     if (!response.status) {
       setError(true);
@@ -89,32 +105,16 @@ export default function Adzan() {
     setCities(cities);
   };
 
-  const handleSelectCity = (city) => {
-    setCityId(city.value);
-    localStorage.setItem("cityId", city.value);
+  const handleCityChange = async (newCityId) => {
+    if (newCityId && cityId !== newCityId) {
+      setCityId(newCityId);
+      localStorage.setItem("cityId", newCityId);
+      await fetchPrayerData(newCityId);
+    }
   };
-  const handleCityChange = async (e) => {
-    e.preventDefault();
-    await fetchPrayerData();
-  };
-  const getInitialCityId = () => {
-    const savedCityId = localStorage.getItem("cityId");
-    return savedCityId ?? jakartaID;
-  };
-
-  const [prayerData, setPrayerData] = useState({
-    dayAndDate: `${weekdays[currentDay]}, ${currentDate}/${addLeadingZero(
-      currentMonth
-    )}/${currentYear}`,
-    schedule: [],
-    city: "KOTA JAKARTA",
-  });
-  const [cities, setCities] = useState([{}]);
-  const [error, setError] = useState(false);
-  const [cityId, setCityId] = useState(getInitialCityId);
 
   useEffect(() => {
-    fetchPrayerData();
+    fetchPrayerData(cityId);
     fetchCitiesData();
   }, []);
 
@@ -125,11 +125,7 @@ export default function Adzan() {
         <h2>{prayerData.dayAndDate}</h2>
         <Clock />
       </div>
-      <CityChanger
-        cities={cities}
-        handleCityChange={handleCityChange}
-        handleSelectCity={handleSelectCity}
-      />
+      <CityChanger cities={cities} handleCityChange={handleCityChange} />
       <div className="PrayerTimeContainer">
         {error ? (
           <h2>Gagal mengambil data </h2>
