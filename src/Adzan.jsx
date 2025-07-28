@@ -8,7 +8,7 @@ import { addLeadingZero } from "../utils/string";
 import CityChanger from "./CityChanger";
 
 const baseAPI = "https://api.myquran.com/v2";
-const batamID = "0506";
+const jakartaID = "1301";
 const time = new Date();
 const currentDate = time.getDate();
 const currentMonth = time.getMonth() + 1;
@@ -50,16 +50,6 @@ export default function Adzan() {
     "maghrib",
     "isya",
   ]);
-  const [prayerData, setPrayerData] = useState({
-    dayAndDate: `${weekdays[currentDay]}, ${currentDate}/${addLeadingZero(
-      currentMonth
-    )}/${currentYear}`,
-    schedule: [],
-    city: "KOTA JAKARTA",
-  });
-  const [cities, setCities] = useState([{}]);
-  const [error, setError] = useState(false);
-  const [cityId, setCityId] = useState(batamID);
 
   const fetchPrayerData = async () => {
     const response = await getTodayPrayerTime(cityId);
@@ -101,11 +91,27 @@ export default function Adzan() {
 
   const handleSelectCity = (city) => {
     setCityId(city.value);
+    localStorage.setItem("cityId", city.value);
   };
   const handleCityChange = async (e) => {
     e.preventDefault();
     await fetchPrayerData();
   };
+  const getInitialCityId = () => {
+    const savedCityId = localStorage.getItem("cityId");
+    return savedCityId ?? jakartaID;
+  };
+
+  const [prayerData, setPrayerData] = useState({
+    dayAndDate: `${weekdays[currentDay]}, ${currentDate}/${addLeadingZero(
+      currentMonth
+    )}/${currentYear}`,
+    schedule: [],
+    city: "KOTA JAKARTA",
+  });
+  const [cities, setCities] = useState([{}]);
+  const [error, setError] = useState(false);
+  const [cityId, setCityId] = useState(getInitialCityId);
 
   useEffect(() => {
     fetchPrayerData();
