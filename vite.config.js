@@ -12,7 +12,7 @@ export default defineConfig({
       manifest: {
         name: "Adzan Time",
         short_name: "Adzan Time",
-        theme_color: "#ffffff",
+        theme_color: null,
         icons: [
           {
             src: "pwa-64x64.png",
